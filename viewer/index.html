@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f3f6fb;
+            color: #20232a;
+        }
+
+        header {
+            padding: 24px 32px;
+            background: #0f172a;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 0.02em;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: #cbd5e1;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(300px, 380px) 1fr;
+            gap: 24px;
+            padding: 24px 32px;
+        }
+
+        .panel {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        button,
+        input[type="file"] {
+            width: 100%;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            resize: vertical;
+            font-family: monospace;
+            font-size: 13px;
+            color: #0f172a;
+            background: #f8fafc;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .summary .item {
+            background: #eef2ff;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .summary .item strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1d4ed8;
+        }
+
+        .tree {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tree li {
+            position: relative;
+            padding: 12px 16px;
+            margin: 0 0 10px 0;
+            background: #f8fafc;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+        }
+
+        .tree li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -18px;
+            width: 12px;
+            height: 100%;
+            border-left: 2px solid #c7d2fe;
+        }
+
+        .tree li::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: -18px;
+            width: 18px;
+            height: 0;
+            border-top: 2px solid #c7d2fe;
+        }
+
+        .tree > li::before,
+        .tree > li::after {
+            display: none;
+        }
+
+        .tree li > .header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .tree li > .header small {
+            font-weight: 400;
+            color: #475569;
+        }
+
+        .tree ul {
+            margin: 14px 0 0 18px;
+            padding-left: 0;
+        }
+
+        .log-item {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+
+        .log-item span {
+            display: block;
+            color: #475569;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .controls-row label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        select {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .badge-async {
+            background: #f97316;
+        }
+
+        .badge-direct {
+            background: #16a34a;
+        }
+
+        .badge-info {
+            background: #2563eb;
+        }
+
+        .badge-warn {
+            background: #d97706;
+        }
+
+        .badge-error {
+            background: #b91c1c;
+        }
+
+        .compact-flow {
+            margin-top: 18px;
+        }
+
+        .compact-flow .flow-item {
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid #dbeafe;
+            margin-bottom: 12px;
+            background: #f8fafc;
+        }
+
+        .compact-flow .flow-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .compact-flow .flow-meta {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 6px;
+        }
+
+        .compact-flow .flow-description {
+            margin-top: 10px;
+            color: #334155;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            padding: 16px 32px 24px;
+            color: #475569;
+            text-align: center;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Trace Viewer</h1>
+    <p>Load your `trace.log` file and inspect the reconstructed flow, spans, threads, and debug message context.</p>
+</header>
+<main>
+    <section class="panel">
+        <h2>Load Trace Data</h2>
+        <input type="file" id="fileInput" accept=".json,.log,.txt" />
+        <button id="parseBtn" disabled>Parse Trace Data</button>
+        <div class="controls-row">
+            <label>
+                View mode:
+                <select id="viewMode">
+                    <option value="tree">Tree View</option>
+                    <option value="compact">Compact Call Flow</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <label><input type="checkbox" id="filterInfo" checked /> INFO</label>
+            <label><input type="checkbox" id="filterWarn" checked /> WARN</label>
+            <label><input type="checkbox" id="filterError" checked /> ERROR</label>
+        </div>
+        <textarea id="textInput" placeholder="Or paste the reconstructed JSON or trace.log contents here..."></textarea>
+        <div class="summary" id="summary"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Trace Flow</h2>
+        <div id="treeContainer">
+            <p>Select a trace data file or paste data, then click Parse.</p>
+        </div>
+        <div id="flowContainer" style="display:none;"></div>
+    </section>
+</main>
+<div class="footer">Open this file in a browser and use the file picker or paste the log contents. No backend server required.</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const parseBtn = document.getElementById('parseBtn');
+    const textInput = document.getElementById('textInput');
+    const treeContainer = document.getElementById('treeContainer');
+    const flowContainer = document.getElementById('flowContainer');
+    const summary = document.getElementById('summary');
+    const viewMode = document.getElementById('viewMode');
+    const filterInfo = document.getElementById('filterInfo');
+    const filterWarn = document.getElementById('filterWarn');
+    const filterError = document.getElementById('filterError');
+
+    let lastParsedInput = null;
+
+    fileInput.addEventListener('change', event => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            textInput.value = reader.result;
+            parseBtn.disabled = false;
+        };
+        reader.readAsText(file);
+    });
+
+    textInput.addEventListener('input', () => {
+        parseBtn.disabled = textInput.value.trim().length === 0;
+    });
+
+    viewMode.addEventListener('change', () => {
+        if (lastParsedInput) {
+            updateDisplay();
+        }
+    });
+
+    [filterInfo, filterWarn, filterError].forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (lastParsedInput) {
+                updateDisplay();
+            }
+        });
+    });
+
+    parseBtn.addEventListener('click', () => {
+        const text = textInput.value.trim();
+        if (!text) {
+            alert('Please paste or load trace data first.');
+            return;
+        }
+        lastParsedInput = parseInputData(text);
+        updateDisplay();
+    });
+
+    function updateDisplay() {
+        const filtered = applyFilters(lastParsedInput);
+        const result = buildTraceTree(filtered);
+        renderTree(result.roots, result.stats);
+    }
+
+    function parseInputData(text) {
+        const trimmed = text.trim();
+        if (trimmed.startsWith('{') && trimmed.includes('"roots"')) {
+            try {
+                return JSON.parse(trimmed);
+            } catch (err) {
+                alert('Failed to parse structured JSON. Please provide valid JSON.');
+                return { roots: [], stats: { spans: 0, logs: 0, roots: 0 } };
+            }
+        }
+
+        const lines = trimmed.split(/\r?\n/);
+        const events = [];
+        for (const line of lines) {
+            const trimmedLine = line.trim();
+            if (!trimmedLine) continue;
+            try {
+                const obj = JSON.parse(trimmedLine);
+                events.push(obj);
+            } catch (err) {
+                console.warn('Skipping invalid JSON line:', line);
+            }
+        }
+        return events;
+    }
+
+    function logLevelName(level) {
+        switch (level) {
+            case 1: return 'WARN';
+            case 2: return 'ERROR';
+            default: return 'INFO';
+        }
+    }
+
+    function shouldKeepLog(level) {
+        const name = logLevelName(level);
+        return (name === 'INFO' && filterInfo.checked)
+            || (name === 'WARN' && filterWarn.checked)
+            || (name === 'ERROR' && filterError.checked);
+    }
+
+    function applyFilters(input) {
+        if (Array.isArray(input)) {
+            return input.map(event => {
+                if (event.type === 'LOG' && !shouldKeepLog(event.level)) {
+                    return { ...event, msg: '', file: '', func: '', line: 0 };
+                }
+                return event;
+            }).filter(event => event.type !== 'LOG' || shouldKeepLog(event.level));
+        }
+        if (input && Array.isArray(input.roots)) {
+            const clone = JSON.parse(JSON.stringify(input));
+            function filterNode(node) {
+                if (Array.isArray(node.logs)) {
+                    node.logs = node.logs.filter(log => shouldKeepLog(log.level));
+                }
+                if (Array.isArray(node.children)) {
+                    node.children.forEach(filterNode);
+                }
+            }
+            clone.roots.forEach(filterNode);
+            return clone;
+        }
+        return input;
+    }
+
+    function buildTraceTree(input) {
+        if (Array.isArray(input)) {
+            return buildFromEvents(input);
+        }
+        if (input && Array.isArray(input.roots)) {
+            return buildFromStructuredJson(input);
+        }
+        return { roots: [], stats: { spans: 0, logs: 0, roots: 0 } };
+    }
+
+    function buildFromEvents(events) {
+        const spans = new Map();
+        const stats = { spans: 0, logs: 0, roots: 0 };
+
+        for (const ev of events) {
+            const type = ev.type;
+            if (type === 'SPAN_START') {
+                spans.set(ev.span, {
+                    spanId: ev.span,
+                    parentId: ev.parent || 0,
+                    name: ev.msg || 'span',
+                    startTs: ev.ts || 0,
+                    endTs: 0,
+                    threadId: ev.tid || 0,
+                    logs: [],
+                    children: []
+                });
+                stats.spans += 1;
+            } else if (type === 'SPAN_END') {
+                const node = spans.get(ev.span);
+                if (node) node.endTs = ev.ts || node.endTs;
+            } else if (type === 'LOG') {
+                const node = spans.get(ev.span);
+                const logEntry = {
+                    ts: ev.ts || 0,
+                    level: ev.level,
+                    msg: ev.msg || '',
+                    file: ev.file || '',
+                    func: ev.func || '',
+                    line: ev.line || 0,
+                    threadId: ev.tid || 0,
+                    spanId: ev.span || 0
+                };
+                if (node) {
+                    node.logs.push(logEntry);
+                } else {
+                    const rootKey = 0;
+                    if (!spans.has(rootKey)) {
+                        spans.set(rootKey, {
+                            spanId: 0,
+                            parentId: 0,
+                            name: 'root',
+                            startTs: 0,
+                            endTs: 0,
+                            threadId: logEntry.threadId,
+                            logs: [],
+                            children: []
+                        });
+                    }
+                    spans.get(rootKey).logs.push(logEntry);
+                }
+                stats.logs += 1;
+            }
+        }
+
+        const roots = [];
+        for (const node of spans.values()) {
+            if (node.endTs === 0) node.endTs = node.startTs;
+        }
+
+        for (const node of spans.values()) {
+            if (node.parentId && spans.has(node.parentId)) {
+                spans.get(node.parentId).children.push(node);
+            } else if (node.spanId !== 0) {
+                roots.push(node);
+            }
+        }
+
+        stats.roots = roots.length;
+        roots.sort((a, b) => a.startTs - b.startTs);
+        return { roots, stats };
+    }
+
+    function buildFromStructuredJson(data) {
+        const roots = data.roots || [];
+        const stats = { spans: 0, logs: 0, roots: roots.length };
+
+        function walk(node) {
+            stats.spans += 1;
+            if (Array.isArray(node.logs)) {
+                stats.logs += node.logs.length;
+            }
+            if (Array.isArray(node.children)) {
+                node.children.forEach(walk);
+            }
+        }
+
+        roots.forEach(walk);
+        return { roots, stats };
+    }
+
+    function renderTree(nodes, stats) {
+        summary.innerHTML = `
+            <div class="item"><strong>${stats.spans || 0}</strong> spans</div>
+            <div class="item"><strong>${stats.logs || 0}</strong> logs</div>
+            <div class="item"><strong>${stats.roots || nodes.length}</strong> root spans</div>
+            <div class="item"><strong>${Math.max(0, nodes.length)}</strong> top-level items</div>
+        `;
+
+        const mode = viewMode.value;
+        treeContainer.style.display = mode === 'tree' ? 'block' : 'none';
+        flowContainer.style.display = mode === 'compact' ? 'block' : 'none';
+
+        if (mode === 'compact') {
+            renderCompactFlow(nodes);
+            return;
+        }
+
+        if (nodes.length === 0) {
+            treeContainer.innerHTML = '<p>No span entries were found in the provided trace data.</p>';
+            flowContainer.innerHTML = '';
+            return;
+        }
+
+        const list = document.createElement('ul');
+        list.className = 'tree';
+        for (const node of nodes) {
+            list.appendChild(renderNode(node, 0));
+        }
+        treeContainer.innerHTML = '';
+        treeContainer.appendChild(list);
+        flowContainer.innerHTML = '';
+    }
+
+    function renderNode(node, parentThreadId) {
+        const item = document.createElement('li');
+        const header = document.createElement('div');
+        header.className = 'header';
+
+        const title = document.createElement('div');
+        title.textContent = `${node.name} (${node.durationUs || node.endTs - node.startTs}us)`;
+
+        const meta = document.createElement('small');
+        meta.textContent = `thread ${node.threadId} · span ${node.spanId} · ${node.startTs} → ${node.endTs}`;
+
+        header.appendChild(title);
+        header.appendChild(meta);
+        item.appendChild(header);
+
+        if (parentThreadId && node.threadId !== parentThreadId) {
+            const badge = document.createElement('span');
+            badge.className = 'badge badge-async';
+            badge.textContent = 'ASYNC HANDOFF';
+            item.appendChild(badge);
+        } else if (parentThreadId) {
+            const badge = document.createElement('span');
+            badge.className = 'badge badge-direct';
+            badge.textContent = 'DIRECT CALL';
+            item.appendChild(badge);
+        }
+
+        if (Array.isArray(node.logs)) {
+            for (const log of node.logs) {
+                if (!shouldKeepLog(log.level)) continue;
+                const logEl = document.createElement('div');
+                logEl.className = 'log-item';
+
+                const levelBadge = document.createElement('span');
+                const levelName = logLevelName(log.level);
+                levelBadge.className = `badge badge-${levelName.toLowerCase()}`;
+                levelBadge.textContent = levelName;
+                levelBadge.style.marginRight = '8px';
+                logEl.appendChild(levelBadge);
+
+                const text = document.createElement('span');
+                text.textContent = log.msg;
+                logEl.appendChild(text);
+
+                const detail = document.createElement('span');
+                detail.textContent = `at ${log.file || 'unknown'}:${log.func || 'unknown'}:${log.line || '0'}`;
+                logEl.appendChild(detail);
+
+                item.appendChild(logEl);
+            }
+        }
+
+        if (Array.isArray(node.children) && node.children.length) {
+            const childList = document.createElement('ul');
+            for (const child of node.children) {
+                childList.appendChild(renderNode(child, node.threadId));
+            }
+            item.appendChild(childList);
+        }
+
+        return item;
+    }
+
+    function renderCompactFlow(nodes) {
+        flowContainer.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'compact-flow';
+
+        nodes.forEach(node => renderFlowNode(node, 0, 0, wrapper));
+        flowContainer.appendChild(wrapper);
+    }
+
+    function renderFlowNode(node, depth, parentThreadId, parentElement) {
+        const item = document.createElement('div');
+        item.className = 'flow-item';
+        item.style.marginLeft = `${depth * 16}px`;
+
+        const header = document.createElement('div');
+        header.className = 'flow-header';
+        header.textContent = node.name;
+
+        const badge = document.createElement('span');
+        badge.className = 'badge ' + (parentThreadId && node.threadId !== parentThreadId ? 'badge-async' : 'badge-direct');
+        badge.textContent = parentThreadId ? (node.threadId !== parentThreadId ? 'ASYNC' : 'DIRECT') : 'ROOT';
+        header.appendChild(badge);
+        item.appendChild(header);
+
+        const meta = document.createElement('div');
+        meta.className = 'flow-meta';
+        meta.textContent = `span ${node.spanId} · thread ${node.threadId} · ${node.startTs} → ${node.endTs} · ${node.durationUs || node.endTs - node.startTs}us`;
+        item.appendChild(meta);
+
+        if (node.children && node.children.length) {
+            const childMeta = document.createElement('div');
+            childMeta.className = 'flow-description';
+            childMeta.textContent = `Children: ${node.children.length}`;
+            item.appendChild(childMeta);
+        }
+
+        if (node.logs && node.logs.length) {
+            const logs = node.logs.filter(log => shouldKeepLog(log.level));
+            if (logs.length) {
+                const logSummary = document.createElement('div');
+                logSummary.className = 'flow-description';
+                logSummary.textContent = `Logs: ${logs.map(log => `${logLevelName(log.level)}: ${log.msg}`).join(' | ')}`;
+                item.appendChild(logSummary);
+            }
+        }
+
+        parentElement.appendChild(item);
+
+        if (Array.isArray(node.children) && node.children.length) {
+            node.children.forEach(child => renderFlowNode(child, depth + 1, node.threadId, parentElement));
+        }
+    }
+</script>
+</body>
+</html>

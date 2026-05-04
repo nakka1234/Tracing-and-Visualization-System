@@ -1,0 +1,491 @@
+{
+  "roots": [
+    {
+      "spanId": 1,
+      "parentId": 0,
+      "name": "main",
+      "startTs": 245867219731,
+      "endTs": 245867335075,
+      "durationUs": 115344,
+      "threadId": 7812187183166159419,
+      "logs": [
+        {
+          "ts": 245867219743,
+          "level": 0,
+          "msg": "=== Sync then Async ===",
+          "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+          "func": "main",
+          "line": 112
+        },
+        {
+          "ts": 245867269407,
+          "level": 0,
+          "msg": "=== Worker Pool ===",
+          "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+          "func": "main",
+          "line": 115
+        },
+        {
+          "ts": 245867303839,
+          "level": 0,
+          "msg": "=== Mixed Workload ===",
+          "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+          "func": "main",
+          "line": 118
+        },
+        {
+          "ts": 245867335056,
+          "level": 0,
+          "msg": "all tasks complete",
+          "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+          "func": "main",
+          "line": 121
+        }
+      ],
+      "children": [
+        {
+          "spanId": 2,
+          "parentId": 1,
+          "name": "sync_then_async",
+          "startTs": 245867219760,
+          "endTs": 245867269377,
+          "durationUs": 49617,
+          "threadId": 7812187183166159419,
+          "logs": [
+            {
+              "ts": 245867219771,
+              "level": 0,
+              "msg": "phase 1: sync operations",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "sync_then_async",
+              "line": 61
+            },
+            {
+              "ts": 245867253141,
+              "level": 0,
+              "msg": "phase 2: async operations",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "sync_then_async",
+              "line": 65
+            },
+            {
+              "ts": 245867253332,
+              "level": 0,
+              "msg": "\"async task spawned",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "sync_then_async",
+              "line": 67
+            },
+            {
+              "ts": 245867269344,
+              "level": 0,
+              "msg": "async task joined",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "sync_then_async",
+              "line": 70
+            }
+          ],
+          "children": [
+            {
+              "spanId": 3,
+              "parentId": 2,
+              "name": "compute",
+              "startTs": 245867219796,
+              "endTs": 245867238136,
+              "durationUs": 18340,
+              "threadId": 7812187183166159419,
+              "logs": [
+                {
+                  "ts": 245867219809,
+                  "level": 0,
+                  "msg": "computing",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "compute",
+                  "line": 11
+                },
+                {
+                  "ts": 245867238078,
+                  "level": 0,
+                  "msg": "compute done",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "compute",
+                  "line": 13
+                }
+              ],
+              "children": [
+              ]
+            },
+            {
+              "spanId": 4,
+              "parentId": 2,
+              "name": "io_read",
+              "startTs": 245867238148,
+              "endTs": 245867253135,
+              "durationUs": 14987,
+              "threadId": 7812187183166159419,
+              "logs": [
+                {
+                  "ts": 245867238159,
+                  "level": 0,
+                  "msg": "reading file",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "io_read",
+                  "line": 19
+                },
+                {
+                  "ts": 245867253097,
+                  "level": 0,
+                  "msg": "read complete",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "io_read",
+                  "line": 21
+                }
+              ],
+              "children": [
+              ]
+            },
+            {
+              "spanId": 5,
+              "parentId": 2,
+              "name": "risky_operation",
+              "startTs": 245867253645,
+              "endTs": 245867269036,
+              "durationUs": 15391,
+              "threadId": 14365030900855885798,
+              "logs": [
+                {
+                  "ts": 245867253681,
+                  "level": 0,
+                  "msg": "attempting risky operation",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "risky_operation",
+                  "line": 35
+                },
+                {
+                  "ts": 245867268840,
+                  "level": 2,
+                  "msg": "operation failed (expected)",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "risky_operation",
+                  "line": 37
+                },
+                {
+                  "ts": 245867268913,
+                  "level": 0,
+                  "msg": "recovery initiated",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "risky_operation",
+                  "line": 38
+                }
+              ],
+              "children": [
+              ]
+            }
+          ]
+        },
+        {
+          "spanId": 6,
+          "parentId": 1,
+          "name": "worker_pool",
+          "startTs": 245867269433,
+          "endTs": 245867303832,
+          "durationUs": 34399,
+          "threadId": 7812187183166159419,
+          "logs": [
+            {
+              "ts": 245867269454,
+              "level": 0,
+              "msg": "spawning worker threads",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "worker_pool",
+              "line": 44
+            },
+            {
+              "ts": 245867269882,
+              "level": 0,
+              "msg": "\"workers spawned",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "worker_pool",
+              "line": 50
+            },
+            {
+              "ts": 245867303800,
+              "level": 0,
+              "msg": "all workers done",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "worker_pool",
+              "line": 54
+            }
+          ],
+          "children": [
+            {
+              "spanId": 7,
+              "parentId": 6,
+              "name": "background_task",
+              "startTs": 245867269935,
+              "endTs": 245867302960,
+              "durationUs": 33025,
+              "threadId": 16679361093511212965,
+              "logs": [
+                {
+                  "ts": 245867269953,
+                  "level": 1,
+                  "msg": "background task started",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 27
+                },
+                {
+                  "ts": 245867302893,
+                  "level": 0,
+                  "msg": "background task finished",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 29
+                }
+              ],
+              "children": [
+              ]
+            },
+            {
+              "spanId": 8,
+              "parentId": 6,
+              "name": "background_task",
+              "startTs": 245867270111,
+              "endTs": 245867303537,
+              "durationUs": 33426,
+              "threadId": 4344663319196431120,
+              "logs": [
+                {
+                  "ts": 245867270130,
+                  "level": 1,
+                  "msg": "background task started",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 27
+                },
+                {
+                  "ts": 245867303479,
+                  "level": 0,
+                  "msg": "background task finished",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 29
+                }
+              ],
+              "children": [
+              ]
+            },
+            {
+              "spanId": 9,
+              "parentId": 6,
+              "name": "background_task",
+              "startTs": 245867270279,
+              "endTs": 245867302959,
+              "durationUs": 32680,
+              "threadId": 12250216327683403680,
+              "logs": [
+                {
+                  "ts": 245867270299,
+                  "level": 1,
+                  "msg": "background task started",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 27
+                },
+                {
+                  "ts": 245867302894,
+                  "level": 0,
+                  "msg": "background task finished",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "background_task",
+                  "line": 29
+                }
+              ],
+              "children": [
+              ]
+            }
+          ]
+        },
+        {
+          "spanId": 10,
+          "parentId": 1,
+          "name": "mixed_workload",
+          "startTs": 245867303849,
+          "endTs": 245867335042,
+          "durationUs": 31193,
+          "threadId": 7812187183166159419,
+          "logs": [
+            {
+              "ts": 245867303878,
+              "level": 0,
+              "msg": "starting mixed workload",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "mixed_workload",
+              "line": 77
+            },
+            {
+              "ts": 245867319001,
+              "level": 0,
+              "msg": "main thread continuing",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "mixed_workload",
+              "line": 96
+            },
+            {
+              "ts": 245867335014,
+              "level": 0,
+              "msg": "mixed workload complete",
+              "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+              "func": "mixed_workload",
+              "line": 102
+            }
+          ],
+          "children": [
+            {
+              "spanId": 11,
+              "parentId": 10,
+              "name": "compute",
+              "startTs": 245867303892,
+              "endTs": 245867318650,
+              "durationUs": 14758,
+              "threadId": 7812187183166159419,
+              "logs": [
+                {
+                  "ts": 245867303899,
+                  "level": 0,
+                  "msg": "computing",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "compute",
+                  "line": 11
+                },
+                {
+                  "ts": 245867318596,
+                  "level": 0,
+                  "msg": "compute done",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "compute",
+                  "line": 13
+                }
+              ],
+              "children": [
+              ]
+            },
+            {
+              "spanId": 12,
+              "parentId": 10,
+              "name": "bg_thread_1",
+              "startTs": 245867319229,
+              "endTs": 245867334433,
+              "durationUs": 15204,
+              "threadId": 15735606657672724526,
+              "logs": [
+                {
+                  "ts": 245867319304,
+                  "level": 0,
+                  "msg": "bg thread 1 active",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "mixed_workload::<lambda_6502d40a5cd55d834537e4adf7724cfe>::operator ()",
+                  "line": 85
+                }
+              ],
+              "children": [
+                {
+                  "spanId": 14,
+                  "parentId": 12,
+                  "name": "io_read",
+                  "startTs": 245867319361,
+                  "endTs": 245867334417,
+                  "durationUs": 15056,
+                  "threadId": 15735606657672724526,
+                  "logs": [
+                    {
+                      "ts": 245867319394,
+                      "level": 0,
+                      "msg": "reading file",
+                      "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                      "func": "io_read",
+                      "line": 19
+                    },
+                    {
+                      "ts": 245867334376,
+                      "level": 0,
+                      "msg": "read complete",
+                      "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                      "func": "io_read",
+                      "line": 21
+                    }
+                  ],
+                  "children": [
+                  ]
+                }
+              ]
+            },
+            {
+              "spanId": 13,
+              "parentId": 10,
+              "name": "bg_thread_2",
+              "startTs": 245867319302,
+              "endTs": 245867334566,
+              "durationUs": 15264,
+              "threadId": 15444260552686247051,
+              "logs": [
+                {
+                  "ts": 245867319325,
+                  "level": 1,
+                  "msg": "bg thread 2 active",
+                  "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                  "func": "mixed_workload::<lambda_d3b5130c578528bcc4b1053771925a95>::operator ()",
+                  "line": 91
+                }
+              ],
+              "children": [
+                {
+                  "spanId": 15,
+                  "parentId": 13,
+                  "name": "risky_operation",
+                  "startTs": 245867319384,
+                  "endTs": 245867334550,
+                  "durationUs": 15166,
+                  "threadId": 15444260552686247051,
+                  "logs": [
+                    {
+                      "ts": 245867319404,
+                      "level": 0,
+                      "msg": "attempting risky operation",
+                      "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                      "func": "risky_operation",
+                      "line": 35
+                    },
+                    {
+                      "ts": 245867334360,
+                      "level": 2,
+                      "msg": "operation failed (expected)",
+                      "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                      "func": "risky_operation",
+                      "line": 37
+                    },
+                    {
+                      "ts": 245867334419,
+                      "level": 0,
+                      "msg": "recovery initiated",
+                      "file": "C:\\vs_projects\\tracing_system\\demo\\main.cpp",
+                      "func": "risky_operation",
+                      "line": 38
+                    }
+                  ],
+                  "children": [
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "spanCount": 1,
+    "rootCount": 1
+  }
+}

@@ -1,0 +1,67 @@
+{"type":"LOG","span":0,"ts":245867219577,"tid":7812187183166159419,"pid":32064,"msg":"program starting","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"main","line":107}
+{"type":"SPAN_START","span":1,"parent":0,"ts":245867219731,"tid":7812187183166159419,"pid":32064,"msg":"main"}
+{"type":"LOG","span":1,"ts":245867219743,"tid":7812187183166159419,"pid":32064,"msg":"=== Sync then Async ===","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"main","line":112}
+{"type":"SPAN_START","span":2,"parent":1,"ts":245867219760,"tid":7812187183166159419,"pid":32064,"msg":"sync_then_async"}
+{"type":"LOG","span":2,"ts":245867219771,"tid":7812187183166159419,"pid":32064,"msg":"phase 1: sync operations","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"sync_then_async","line":61}
+{"type":"SPAN_START","span":3,"parent":2,"ts":245867219796,"tid":7812187183166159419,"pid":32064,"msg":"compute"}
+{"type":"LOG","span":3,"ts":245867219809,"tid":7812187183166159419,"pid":32064,"msg":"computing","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"compute","line":11}
+{"type":"LOG","span":3,"ts":245867238078,"tid":7812187183166159419,"pid":32064,"msg":"compute done","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"compute","line":13}
+{"type":"SPAN_END","span":3,"parent":2,"ts":245867238136,"tid":7812187183166159419,"pid":32064,"msg":"compute"}
+{"type":"SPAN_START","span":4,"parent":2,"ts":245867238148,"tid":7812187183166159419,"pid":32064,"msg":"io_read"}
+{"type":"LOG","span":4,"ts":245867238159,"tid":7812187183166159419,"pid":32064,"msg":"reading file","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"io_read","line":19}
+{"type":"LOG","span":4,"ts":245867253097,"tid":7812187183166159419,"pid":32064,"msg":"read complete","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"io_read","line":21}
+{"type":"SPAN_END","span":4,"parent":2,"ts":245867253135,"tid":7812187183166159419,"pid":32064,"msg":"io_read"}
+{"type":"LOG","span":2,"ts":245867253141,"tid":7812187183166159419,"pid":32064,"msg":"phase 2: async operations","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"sync_then_async","line":65}
+{"type":"LOG","span":2,"ts":245867253332,"tid":7812187183166159419,"pid":32064,"msg":"async task spawned, continuing","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"sync_then_async","line":67}
+{"type":"SPAN_START","span":5,"parent":2,"ts":245867253645,"tid":14365030900855885798,"pid":32064,"msg":"risky_operation"}
+{"type":"LOG","span":5,"ts":245867253681,"tid":14365030900855885798,"pid":32064,"msg":"attempting risky operation","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":35}
+{"type":"LOG","span":5,"ts":245867268840,"tid":14365030900855885798,"pid":32064,"msg":"operation failed (expected)","level":2,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":37}
+{"type":"LOG","span":5,"ts":245867268913,"tid":14365030900855885798,"pid":32064,"msg":"recovery initiated","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":38}
+{"type":"SPAN_END","span":5,"parent":2,"ts":245867269036,"tid":14365030900855885798,"pid":32064,"msg":"risky_operation"}
+{"type":"LOG","span":2,"ts":245867269344,"tid":7812187183166159419,"pid":32064,"msg":"async task joined","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"sync_then_async","line":70}
+{"type":"SPAN_END","span":2,"parent":1,"ts":245867269377,"tid":7812187183166159419,"pid":32064,"msg":"sync_then_async"}
+{"type":"LOG","span":1,"ts":245867269407,"tid":7812187183166159419,"pid":32064,"msg":"=== Worker Pool ===","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"main","line":115}
+{"type":"SPAN_START","span":6,"parent":1,"ts":245867269433,"tid":7812187183166159419,"pid":32064,"msg":"worker_pool"}
+{"type":"LOG","span":6,"ts":245867269454,"tid":7812187183166159419,"pid":32064,"msg":"spawning worker threads","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"worker_pool","line":44}
+{"type":"LOG","span":6,"ts":245867269882,"tid":7812187183166159419,"pid":32064,"msg":"workers spawned, waiting for completion","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"worker_pool","line":50}
+{"type":"SPAN_START","span":7,"parent":6,"ts":245867269935,"tid":16679361093511212965,"pid":32064,"msg":"background_task"}
+{"type":"LOG","span":7,"ts":245867269953,"tid":16679361093511212965,"pid":32064,"msg":"background task started","level":1,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":27}
+{"type":"SPAN_START","span":8,"parent":6,"ts":245867270111,"tid":4344663319196431120,"pid":32064,"msg":"background_task"}
+{"type":"LOG","span":8,"ts":245867270130,"tid":4344663319196431120,"pid":32064,"msg":"background task started","level":1,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":27}
+{"type":"SPAN_START","span":9,"parent":6,"ts":245867270279,"tid":12250216327683403680,"pid":32064,"msg":"background_task"}
+{"type":"LOG","span":9,"ts":245867270299,"tid":12250216327683403680,"pid":32064,"msg":"background task started","level":1,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":27}
+{"type":"LOG","span":9,"ts":245867302894,"tid":12250216327683403680,"pid":32064,"msg":"background task finished","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":29}
+{"type":"LOG","span":7,"ts":245867302893,"tid":16679361093511212965,"pid":32064,"msg":"background task finished","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":29}
+{"type":"SPAN_END","span":9,"parent":6,"ts":245867302959,"tid":12250216327683403680,"pid":32064,"msg":"background_task"}
+{"type":"SPAN_END","span":7,"parent":6,"ts":245867302960,"tid":16679361093511212965,"pid":32064,"msg":"background_task"}
+{"type":"LOG","span":8,"ts":245867303479,"tid":4344663319196431120,"pid":32064,"msg":"background task finished","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"background_task","line":29}
+{"type":"SPAN_END","span":8,"parent":6,"ts":245867303537,"tid":4344663319196431120,"pid":32064,"msg":"background_task"}
+{"type":"LOG","span":6,"ts":245867303800,"tid":7812187183166159419,"pid":32064,"msg":"all workers done","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"worker_pool","line":54}
+{"type":"SPAN_END","span":6,"parent":1,"ts":245867303832,"tid":7812187183166159419,"pid":32064,"msg":"worker_pool"}
+{"type":"LOG","span":1,"ts":245867303839,"tid":7812187183166159419,"pid":32064,"msg":"=== Mixed Workload ===","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"main","line":118}
+{"type":"SPAN_START","span":10,"parent":1,"ts":245867303849,"tid":7812187183166159419,"pid":32064,"msg":"mixed_workload"}
+{"type":"LOG","span":10,"ts":245867303878,"tid":7812187183166159419,"pid":32064,"msg":"starting mixed workload","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"mixed_workload","line":77}
+{"type":"SPAN_START","span":11,"parent":10,"ts":245867303892,"tid":7812187183166159419,"pid":32064,"msg":"compute"}
+{"type":"LOG","span":11,"ts":245867303899,"tid":7812187183166159419,"pid":32064,"msg":"computing","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"compute","line":11}
+{"type":"LOG","span":11,"ts":245867318596,"tid":7812187183166159419,"pid":32064,"msg":"compute done","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"compute","line":13}
+{"type":"SPAN_END","span":11,"parent":10,"ts":245867318650,"tid":7812187183166159419,"pid":32064,"msg":"compute"}
+{"type":"LOG","span":10,"ts":245867319001,"tid":7812187183166159419,"pid":32064,"msg":"main thread continuing","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"mixed_workload","line":96}
+{"type":"SPAN_START","span":12,"parent":10,"ts":245867319229,"tid":15735606657672724526,"pid":32064,"msg":"bg_thread_1"}
+{"type":"SPAN_START","span":13,"parent":10,"ts":245867319302,"tid":15444260552686247051,"pid":32064,"msg":"bg_thread_2"}
+{"type":"LOG","span":12,"ts":245867319304,"tid":15735606657672724526,"pid":32064,"msg":"bg thread 1 active","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"mixed_workload::<lambda_6502d40a5cd55d834537e4adf7724cfe>::operator ()","line":85}
+{"type":"LOG","span":13,"ts":245867319325,"tid":15444260552686247051,"pid":32064,"msg":"bg thread 2 active","level":1,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"mixed_workload::<lambda_d3b5130c578528bcc4b1053771925a95>::operator ()","line":91}
+{"type":"SPAN_START","span":14,"parent":12,"ts":245867319361,"tid":15735606657672724526,"pid":32064,"msg":"io_read"}
+{"type":"SPAN_START","span":15,"parent":13,"ts":245867319384,"tid":15444260552686247051,"pid":32064,"msg":"risky_operation"}
+{"type":"LOG","span":14,"ts":245867319394,"tid":15735606657672724526,"pid":32064,"msg":"reading file","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"io_read","line":19}
+{"type":"LOG","span":15,"ts":245867319404,"tid":15444260552686247051,"pid":32064,"msg":"attempting risky operation","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":35}
+{"type":"LOG","span":15,"ts":245867334360,"tid":15444260552686247051,"pid":32064,"msg":"operation failed (expected)","level":2,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":37}
+{"type":"LOG","span":14,"ts":245867334376,"tid":15735606657672724526,"pid":32064,"msg":"read complete","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"io_read","line":21}
+{"type":"SPAN_END","span":14,"parent":12,"ts":245867334417,"tid":15735606657672724526,"pid":32064,"msg":"io_read"}
+{"type":"LOG","span":15,"ts":245867334419,"tid":15444260552686247051,"pid":32064,"msg":"recovery initiated","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"risky_operation","line":38}
+{"type":"SPAN_END","span":15,"parent":13,"ts":245867334550,"tid":15444260552686247051,"pid":32064,"msg":"risky_operation"}
+{"type":"SPAN_END","span":13,"parent":10,"ts":245867334566,"tid":15444260552686247051,"pid":32064,"msg":"bg_thread_2"}
+{"type":"SPAN_END","span":12,"parent":10,"ts":245867334433,"tid":15735606657672724526,"pid":32064,"msg":"bg_thread_1"}
+{"type":"LOG","span":10,"ts":245867335014,"tid":7812187183166159419,"pid":32064,"msg":"mixed workload complete","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"mixed_workload","line":102}
+{"type":"SPAN_END","span":10,"parent":1,"ts":245867335042,"tid":7812187183166159419,"pid":32064,"msg":"mixed_workload"}
+{"type":"LOG","span":1,"ts":245867335056,"tid":7812187183166159419,"pid":32064,"msg":"all tasks complete","level":0,"file":"C:\vs_projects\tracing_system\demo\main.cpp","func":"main","line":121}
+{"type":"SPAN_END","span":1,"parent":0,"ts":245867335075,"tid":7812187183166159419,"pid":32064,"msg":"main"}

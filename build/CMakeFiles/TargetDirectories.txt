@@ -1,0 +1,17 @@
+C:/vs_projects/tracing_system/build/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/CMakeFiles/rebuild_cache.dir
+C:/vs_projects/tracing_system/build/shared/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/shared/CMakeFiles/rebuild_cache.dir
+C:/vs_projects/tracing_system/build/tracing_sdk/CMakeFiles/tracing_sdk.dir
+C:/vs_projects/tracing_system/build/tracing_sdk/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/tracing_sdk/CMakeFiles/rebuild_cache.dir
+C:/vs_projects/tracing_system/build/logging_engine/CMakeFiles/logging_engine.dir
+C:/vs_projects/tracing_system/build/logging_engine/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/logging_engine/CMakeFiles/rebuild_cache.dir
+C:/vs_projects/tracing_system/build/reconstruction/CMakeFiles/reconstruction_lib.dir
+C:/vs_projects/tracing_system/build/reconstruction/CMakeFiles/reconstruction.dir
+C:/vs_projects/tracing_system/build/reconstruction/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/reconstruction/CMakeFiles/rebuild_cache.dir
+C:/vs_projects/tracing_system/build/demo/CMakeFiles/demo.dir
+C:/vs_projects/tracing_system/build/demo/CMakeFiles/edit_cache.dir
+C:/vs_projects/tracing_system/build/demo/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,12 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/vs_projects/tracing_system/build/cmake_install.cmake",
+		"C:/vs_projects/tracing_system/build/shared/cmake_install.cmake",
+		"C:/vs_projects/tracing_system/build/tracing_sdk/cmake_install.cmake",
+		"C:/vs_projects/tracing_system/build/logging_engine/cmake_install.cmake",
+		"C:/vs_projects/tracing_system/build/reconstruction/cmake_install.cmake",
+		"C:/vs_projects/tracing_system/build/demo/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
